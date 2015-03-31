@@ -64,7 +64,7 @@ geometric::rulesystem::activecontained( const subst< variable > & subst,
          }
       }
 
-      if( lem1. hasactive( ))
+      if( lem2. hasactive( ))
       {
          const varatom& act2 = lem2. getactive( );
          if( act1.p == act2.p && ( act1.t & act2.t ) == act1.t &&

@@ -4,7 +4,7 @@
 
 
 Flags = -Wreturn-type -pedantic -pedantic-errors -Wundef -std=c++11 -O5 
-CPP = /usr/local/gcc/bin/g++
+CPP = /usr//bin/g++
 
 
 geo  : Makefile   geometric/signpred.o geometric/lemma.o geometric/existential.o geometric/disjunctive.o geometric/rulebase.o geometric/age.o geometric/disctree.o geometric/unification.o geometric/examples.o geometric/permutationgenerator.o geometric/timepoints.o geometric/rulesystem.o geometric/interpretation.o geometric/false_instance.o geometric/best_false_instances.o geometric/deduction.o geometric/searchstate.o geo.o predicate.o groundatom.o varatom.o rule.o groundsubst.o varsubst.o normalizer.o model.o rulesystem.o false_instance.o varset.o application.o forwardreasoning.o search.o varmatching.o simplification.o parser/token.o parser/inputstream.o parser/errors.o parser/parser.o parser/tptp.o swll/unsignedsubst.o swll/valueset.o swll/occurrencematrix.o swll/vardata.o swll/lemma.o swll/lemmasystem.o swll/searchstate.o firstorder/function.o firstorder/term.o firstorder/formula.o firstorder/sequent.o firstorder/replacement.o firstorder/nnf.o firstorder/simplifications.o firstorder/antiskolemization.o firstorder/factor.o firstorder/geometric.o firstorder/testing.o prolog/expression.o prolog/syntacticdef.o prolog/syntacticdefsforidentifier.o prolog/syntax.o prolog/DFAclassification.o prolog/DFAstate.o prolog/DFAdelta.o prolog/token.o prolog/attribute.o prolog/scanner.o prolog/grammarrule.o prolog/reduction.o prolog/context.o prolog/parsestack.o prolog/reading.o prolog/printing.o prolog/funcpred.o analysis/dependencies.o analysis/dependency_system.o statistics/distribution.o statistics/reporter.o 

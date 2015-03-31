@@ -1,281 +1,292 @@
 
-// Written by Hans de Nivelle, February 2015.
+
+// Code written by Hans de Nivelle, November 2005.
+
 
 #include "rulesystem.h"
-#include "subststack.h"
-#include "matching/basics.h"
-#include "deduction.h"
+#include "simplification.h"
+#include <cstdlib>
 
 
-std::ostream& geometric::operator << ( std::ostream& out,
-                                       const indexedrule& ind )
+unsigned int rulesystem::addrule( rule r, 
+		                  const std::vector< binary_step > & deriv,
+				  bool inductive ) 
 {
-   out << ind.r;
+   ASSERT( r. iswellformed( ));
 
-   // In most cases, one probably doesn't want to see those:
-
-   // out << ind. prem << "\n";
-   // out << ind. vars << "\n";
-   return out;
-}
-
-
-geometric::rulesystem::rulesystem( const std::string& name,
-      const std::vector< rule > & initials,
-      const std::vector< rule > & simplifiers )
-   : name{name}
-{
-   for( const rule& r : initials )
-      ( this -> initials ). push_back(r);
-
-   for( const rule& r : simplifiers )
-      ( this -> simplifiers ). push_back(r); 
-}
-
-
-geometric::rulesystem::rulesystem( const std::string& name,
-      std::initializer_list<rule> initials,
-      std::initializer_list<rule> simplifiers )
-   : name{name}
-{
-   for( const rule& r : initials )
-      ( this -> initials ). push_back(r);
-
-   for( const rule& r : simplifiers )
-      ( this -> simplifiers ). push_back(r); 
-}
-
-
-bool 
-geometric::rulesystem::activecontained( const subst< variable > & subst,
-                                        const lemma& lem1, 
-                                        const lemma& lem2 )
-{
-   if( lem1. hasactive( ))
+   unsigned int deriv1 = derivation. size( );
+   for( std::vector< binary_step > :: const_iterator 
+           p = deriv. begin( );
+           p != deriv. end( );
+	   ++ p )
    {
-      varatom act1 = subst. apply( lem1. getactive( ));
-
-      for( const varatom& prem : lem1. getpassive( ))
-      {
-         if( act1.p == prem.p && ( act1.t & prem.t ) == act1.t &&
-             equal_arguments( act1, prem ))
-         {
-            return true;
-         }
-      }
-
-      if( lem2. hasactive( ))
-      {
-         const varatom& act2 = lem2. getactive( );
-         if( act1.p == act2.p && ( act1.t & act2.t ) == act1.t &&
-                equal_arguments( act1, act2 ))
-         {
-            return true;
-         }
-      }
-
-      return false; 
+      derivation. push_back( *p );
    }
-   else
-      return true; 
+   unsigned int deriv2 = derivation. size( );
+
+   rule r_copy = r. clone_into( predicates_base, arguments_base );
+
+   unsigned int nr = rules. size( );
+
+   rules. push_back( rule_in_system( r_copy, deriv1, deriv2, inductive ));
+
+   return nr; 
 }
 
 
-void geometric::rulesystem::subs_collector::operator( ) (
-   const subst<variable> & subst,
-   const std::vector< std::pair< variable, variable >> & skipped,
-   bool& stop )
+void rulesystem::updatestatistics( const std::vector< binary_step > & deriv,
+		                   unsigned int closure_counter )
 {
-#if 0 
-   std::cout << "found a solution " << subst << "\n"; 
-   std::cout << "skipped: ";
-   for( auto p = skipped. begin( ); p != skipped. end( ); ++ p )
+   for( std::vector< binary_step > :: const_iterator
+           p = deriv. begin( );
+	   p != deriv. end( );
+	   ++ p )
    {
-      std::cout << ( p -> first ) << " == " << ( p -> second ) << "  ";
-   }
-   std::cout << "\n";
-#endif
+      type_of_step step = p -> derivedwith; 
+      unsigned int nr = p -> otherparent;
+      ASSERT( nr < nr_rules( ));
 
-   if( from. islemma( ) &&
-       activecontained( subst, from.getlemma( ), into.getlemma( ) ))
-   {
-      if( results. empty( ))
+      switch( step )
       {
-          results. push_back( { skipped, subst } ); 
+      case step_startwith:
+      case step_disjunctive_res:
+      case step_existential_res:
+         ++ rules [ nr ]. nr_forward;
+         rules [ nr ]. last_forward = closure_counter;
+	 break;
+      case step_equality_simp:
+      case step_existential_simp:
+      case step_disjunctive_simp:
+         ++ rules [ nr ]. nr_simpl;
+	 rules [ nr ]. last_simpl = closure_counter;
+	 break; 
       }
-      else
-      {
-         if( results. back( ). skipped. size( ) > skipped. size( ))
-         {
-            results. front( ) = { skipped, subst };
-         }
-      }
-
-      if( results. back( ). skipped. size( ) == 0 )
-         stop = true;
    }
 }
 
 
-void geometric::rulesystem::addlearnt( std::list<false_instance> added )
+namespace
 {
-#if 1
-   std::cout << "adding learnt lemmas:\n";
-   for( const auto& p : added )
-      std::cout << p << "\n";
-   std::cout << "\n";
-#endif
+   // Lifetime based on nr premisses. It is the lifetime per
+   // application. For every application, the rule earns
+   // a lifetime. 
 
-   const size_t maxskip = 3;
-      // Maximum number of equalities that can be skipped during a
-   const size_t maxsol = 2;
-      // Maximum number of solutions that we keep. 
-
-   while( added. size( ))
+   unsigned int lifetime( unsigned int nrprem )
    {
-      false_instance& first = added. front( ); 
-      
-      index::standardsimple< variable > ind;
-      for( const varatom& at : first. r. getpassive( ))
-         ind. insert( at );
+      if( nrprem < 100 )
+         return 100000;
+      if( nrprem < 200 )
+         return 500;
+      if( nrprem < 300 )
+         return 100;
+      return 100; 
+   }
+}
 
-      set<variable> vars = first. r. getfreevariables( );
 
-      std::list<skippedequalities> solutions; 
-         // Matchings of rules into first that we hope to find.
-         
-      subststack<variable> subst;
-      std::vector< std::pair< variable, variable >> skipped;
-      bool stop = false;
- 
-      for( auto p = simplifiers. begin( ); 
-                p != simplifiers.end( ) && !stop;  
-                ++ p )
+void rulesystem::print( std::ostream& stream,
+		        unsigned int nr_forward, unsigned int nr_simpl,
+			bool inderivation ) const 
+{
+
+   unsigned int nr = 0; 
+   for( std::vector< rulesystem::rule_in_system > :: const_iterator 
+	   r = rules. begin( );
+           r != rules. end( );
+	   ++ r, ++ nr ) 
+   {
+      if( rules [ nr ]. nr_forward >= nr_forward &&
+          rules [ nr ]. nr_simpl >= nr_simpl &&
+	  rules [ nr ]. inderivation >= inderivation )
       {
-         if( p -> r. getpassive( ). size( ) < 5 ) 
-         {
-         subs_collector collector( p -> r, maxsol, solutions, first. r );
-         matching::subsumptionmatch( 
-                        p -> r. getpassive( ), 0,
-                        ind, vars, subst, 
-                        skipped, maxskip, stop, collector );
-         }
-      }  
+         stream << "--------------------------------------\n";
+         stream << nr << ": "; 
 
-      for( auto p = learnt. begin( );
-                p != learnt.end( ) && !stop;
-                ++ p )
-      {
-         if( p -> r. getpassive( ). size( ) < 5 )
+         for( rulesystem::derivation_iterator
+                 p = derivation_begin( nr );
+	         p != derivation_end( nr );
+	         ++ p )
          {
-         subs_collector collector( p -> r, maxsol, solutions, first. r );
-         matching::subsumptionmatch(
-                        p -> r. getpassive( ), 0,
-                        ind, vars, subst,
-                        skipped, maxskip, stop, collector );
-         }
-      }
+            if( p != derivation_begin( nr ))
+               stream << ",";
 
-      if( solutions. size( ))
-      {
-         std::list< false_instance > replacement;
-         for( equality eq : solutions. front( ). skipped )
-         {
-            const element* e1 = first. inst. clookup( eq.v1 );
-            const element* e2 = first. inst. clookup( eq.v2 ); 
-  
-            // One can either process all equalities, or only the 
-            // true ones.
-
-            if( *e1 == *e2 || true )
+            switch( p -> derivedwith )
             {
-               matched<lemma> lem = { first.r.getlemma( ), first.inst };
-               merging m = merging( eq.v1, eq.v2 );
-               lem = merge( lem, { m } );
+            case rulesystem::step_startwith:
+               stream << "Pick("; 
+	       break; 
 
-               replacement. push_back(
-                  false_instance( 
-                     rule( lem.r, mergings( first.r, { m } )),
-                     0,
-                     lem. inst, first. assumptions ));
+            case rulesystem::step_disjunctive_res:
+	       stream << "Disj(";
+	       break;
+            case rulesystem::step_existential_res: 
+               stream << "Exist("; 
+	       break; 
 
+            case rulesystem::step_equality_simp:
+	       stream << "eq(";
+	       break; 
+            case rulesystem::step_existential_simp:
+               stream << "exist(";
+	       break;
+            case rulesystem::step_disjunctive_simp:
+	       stream << "disj(";
+	       break;
+
+            default:
+               ASSERT( false );
+	       exit(0);
             }
-         } 
-     
-         added. pop_front( ); 
-         for( auto& repl : replacement )
+            stream << p -> otherparent;
+            stream << ")";
+         }
+         stream << "\n"; 
+
+         stream << "   (";
+	 stream << "nrappl = " << r -> nr_forward << "/";
+	 stream << r -> nr_simpl << ", "; 
+	 stream << "lastappl = " << r -> last_forward << "/";
+	 stream << r -> last_simpl << ") "; 
+	 stream << "   "; 
+
+         if( r -> deleted )
+            stream << "(deleted";
+         else
+            stream << "(active";
+
+	 if( r -> inductive ) 
+            stream << ",inductive) ";
+	 else
+            stream << ") "; 
+
+	 stream << "\n"; 
+	 stream << "      "; 
+         stream << ( r -> r ) << "\n"; 
+      }
+   }
+}
+
+
+void rulesystem::printderivation( std::ostream& stream,
+		                  unsigned int rulenumber ) const 
+{
+   ASSERT( rulenumber < nr_rules( ));
+
+   for( unsigned int nr = 0; nr < nr_rules( ); ++ nr )
+      rules [ nr ]. inderivation = false;
+
+   rules [ rulenumber ]. inderivation = true;
+
+   for( unsigned int nr = nr_rules( ); nr != 0; )
+   {
+      -- nr;
+
+      if( rules [ nr ]. inderivation )
+      {
+         for( rulesystem::derivation_iterator
+	         p = derivation_begin( nr );
+	         p != derivation_end( nr );
+	         ++ p )
          {
-            added. push_back( std::move( repl )); 
+	    if( p -> derivedwith == step_startwith ||
+                p -> derivedwith == step_disjunctive_res ||
+                p -> derivedwith == step_existential_res )
+            {
+	       unsigned int pppp = p -> otherparent;
+	       ASSERT( pppp < nr );
+	       rules [ pppp ]. inderivation = true;
+            }
          }
       }
-      else
-      {
-         // No solutions found means that first will be added to
-         // the rule system.
-
-         std::cout << "first will be added " << first << "\n";
-         first.r. sortpassive( );
-         learnt. push_back( indexedrule( first.r )); 
-
-         added. pop_front( ); 
-      }
-
-
    }
+
+   print( stream, 0, 0, true );
 }
 
 
-std::ostream&
-geometric::operator << ( std::ostream& out, rulesystem::equality e )
+bool rulesystem::canbedeleted( unsigned int nr ) const
 {
-   out << e.v1 << " == " << e.v2;
-   return out;
-}
-
-
-std::ostream& 
-geometric::operator << ( std::ostream& out, 
-                         const rulesystem::skippedequalities& sk )
-{
-   if( sk.skipped. empty( ))
-      out << "a complete subsumption\n";
-   else
+   if( rules [nr]. deleted || rules [nr]. inductive )
+      return false; 
+  
+   if( ! rules [nr]. r. isdisjunctive( ) || 
+       rules [nr]. r. nr_conclusions( ) != 0 )
    {
-      out << "a partial subsumption: {";
-      for( auto p = sk. skipped. cbegin( ); p != sk. skipped. cend( ); ++ p )
-      {
-         if( p == sk. skipped. cbegin( ))
-            out << " ";
-         else
-            out << ", "; 
-         out << *p;
-      }
-      out << " }\n";
+      return false;
    }
-   return out;
+
+   if( derivation_begin( nr ) == derivation_end( nr ))
+      return false;
+
+   return true;
 }
 
 
-std::ostream& 
-geometric::operator << ( std::ostream& out, const rulesystem& rs )
+int rulesystem::comparerules( unsigned nr1, unsigned int nr2 )
 {
-   out << "RuleSystem " << rs. name << ":\n";
-   out << "Initial Rules:\n";
-   for( const auto& r : rs. initials )
-      out << r << "\n\n";
-   out << "number of initial rules = " << rs. initials. size( ) << "\n\n";
+   unsigned int p1 = rules [ nr1 ]. r. nr_premisses( );
+   unsigned int p2 = rules [ nr2 ]. r. nr_premisses( );
+   if( p1 < p2 )
+      return -1;
+   if( p1 > p2 )
+      return 1;
 
-   out << "Simplifiers:\n";
-   for( const auto& r : rs. simplifiers )
-      out << r << "\n\n";
-   out << "number of simplifiers = " << rs. simplifiers. size( ) << "\n\n";
+   unsigned int v1 = rules [ nr1 ]. r. nr_variables( );
+   unsigned int v2 = rules [ nr2 ]. r. nr_variables( );
+   if( v1 < v2 )
+      return 1;
+   if( v1 > v2 )
+      return -1;
 
-   out << "Lemmas:\n";
-   for( const auto& r : rs. learnt )
-      out << r << "\n\n";
-   out << "number of learnt lemmas = " << rs. learnt. size( ) << "\n\n";
+   if( nr1 < nr2 )
+      return -1;
+   if( nr1 > nr2 )
+      return 1;
 
-   return out;
+   return 0;
+}
+
+
+void rulesystem::deleteheaviest( unsigned int closure_counter )
+{
+   // We first count the active, non-inductive rules.
+
+   unsigned int nr_candidates = 0;
+   for( unsigned int nr = 0; nr < nr_rules( ); ++ nr )
+   {
+      if( canbedeleted( nr ))
+         ++ nr_candidates; 
+   }
+
+   // We currently delete one third of the candiates. 
+
+   for( unsigned int i = 0; i < nr_candidates / 3; ++ i ) 
+   {
+      unsigned int worst = 0;
+      while( ! canbedeleted( worst ))
+         ++ worst;  
+
+      for( unsigned nr = worst + 1; nr < nr_rules( ); ++ nr )
+      {
+         if( canbedeleted( nr ))
+         {
+            if( comparerules( worst, nr ) == -1 )
+               worst = nr;
+         }
+      }
+
+      std::cout << "Deleting " << worst << ":\n";
+      std::cout << rules [ worst ]. r << "\n";
+      rules [ worst ]. deleted = true;
+   }
+}
+
+
+std::ostream& operator << ( std::ostream& stream, const rulesystem& rs )
+{
+   stream << "Rulesystem:\n\n"; 
+   rs. print( stream, 0, 0, false );
+   return stream;
 }
 
 
