@@ -1,0 +1,23 @@
+
+
+#ifndef PREDICATE_STAT_INCLUDED 
+#define PREDICATE_STAT_INCLUDED   1
+
+
+#include "predicate.h"
+
+
+std::map< std::string, std::list< unsigned int > > predicate::lookuptable = 
+         std::map< std::string, std::list< unsigned int > > ( );
+
+std::vector< predicate::prop > predicate::properties = 
+         std::vector< predicate::prop > ( );
+
+
+predicate predicate::diseq = predicate( "!=", 2 ); 
+predicate predicate::create = predicate( "#", 1 ); 
+
+
+#endif
+
+

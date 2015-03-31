@@ -1,0 +1,5 @@
+
+rm geo
+rm *.o
+rm */*.o
+

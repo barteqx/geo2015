@@ -1,0 +1,27 @@
+
+
+#ifndef FUNCTION_STAT_INCLUDED 
+#define FUNCTION_STAT_INCLUDED   1
+
+
+#include "function.h"
+
+
+namespace firstorder
+{
+
+   std::map< std::string, std::list< unsigned int > > function::lookuptable = 
+         std::map< std::string, std::list< unsigned int > > ( );
+
+   std::vector< function::prop > function::properties = 
+         std::vector< function::prop > ( );
+
+   std::vector< function > function::declarationstack =
+         std::vector< function > ( ); 
+
+} 
+
+
+#endif
+
+

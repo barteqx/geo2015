@@ -1,0 +1,85 @@
+
+- Improve matchbase. Test matchbase. It performs well on subst.geo.
+  (It was renamed into index::simple< >. )
+- Try to measure the effect of filtering. Run Geo without filters.
+- Play a bit with the simplifications. (They currently are a disaster.)
+- The simplifications can be considered a tableaux algorithm.
+- Create an interruptor class.
+--------------------------------------------------------------
+- Create a duration class.
+- Improve permutation class, improve permutation generator,
+  and test the mostfrequent option.  (I think that this is done.)
+- Create a substitution class. (Done 21.12.2014)
+- Try to replace unsigned by size_t. 
+- Create a backtracking substitution class as struct. (Done on 30.12.2014)
+- Improved geometric::index::simple to include the argument position. 
+  (31.12.2014).
+- There clearly is a memory leak. (Solved, I forgot to make the
+  destructors of rulebase and infbase virtual. I least i understand
+  now why this is important. 
+- Added a method .getcreatefromsignature( ) that gets the corresponding
+  create symbol from a predicate symbol. This removes most of the
+  need to carry signatures around. (22.01.2015). 
+- Removed matching from basics::conflictmatch, because the matching 
+  can be easily reconstructed, and maintaining it during search
+  costs time. 
+- Changed disjunctive::getactive( ). Added indexing operator to disjunctive.    
+  25.01.2015.
+- I hope that disjunctive resolution got its final form.
+  It takes a single disjunction, a mapping from ground atoms to
+  lemmas, and possibly a single conclusion.
+  The result is a Horn clause, or a conflict lemma.
+- Test disjunctive resolution better.
+- Separate extension functions.
+- Permutationgenerator needs to have a method that permutes vectors.
+  Probably we won't need class permutation anymore. 
+  29.01.2015. I added a polymorphic operator to permutation that
+  permutes vectors. I also tested it for strategy::mostfrequent.
+- We will have another change in the interface of disjunction resolution:
+  A vector of indices that will be resolved, plus their associated
+  lemmas. In addition, one index may become conclusion. 
+- Do something about transfer in deduction.h
+- System made its first inference on 02.02.2015, at 12.20!
+- Maybe assumptions should not have justifications, only Horn clause
+  derived atoms. Maybe, there should be changes in the interpretation. 
+- Sunday 08.02.2015. Complete problems simple( ) and reflexivity( ) 
+  refuted at 14.30. 
+
+Geo2015a:
+   There will be three separate inference rules, 
+   exists_res, disj_res and horn_res. The rules will have simplification 
+   rules in their constructors. This simplifies learn_from_disjunctive.
+   (This was done, but there are only 2 inference rules horn_res and
+    exdisj_res. Otherwise, one cannot change a disjunctive inference into
+    an existential inference.)
+
+   learn_from_disjunctive( ) does not work properly. Its main problem
+   is that it very often won't create Horn clauses in cases where
+   it easily could. Currently, it greedily collects all closing lemmas, 
+   while it should stop as soon as it has enough to create a 
+   Horn clause. 
+
+   In class rule, we need a single method isfinished( ), which combines
+   sortpassive and normalize( ) into a single method. 
+   There is no point in forcing the user to remember which methods
+   should be called.   (Done 12.02.2015. I called it sortformatching.)
+   (I think that this rule should become removed again.)
+
+   normalize( ) should become a deduction rule that works on 
+   matched<lemma>. This makes it possible to remove reference
+   to matching from rule base.
+
+   unwindlemmas( ) does not handle horn clauses properly. Fortunately,
+   learn_from_disjunctive( ) is also not properly implemented, so that 
+   it almost never generates a Horn clause. Until now, I didn't 
+   see it happen yet. 
+
+   The examples should be completed with simplifiers. 
+   Done 19.02.2015.
+ 
+   We need subsumption, and subsumption that skips equality. 
+   Somewhat done on 22.02.2015.
+
+   Make uniquenumber<T> class, which can assign a unique number to
+   every T. 
+

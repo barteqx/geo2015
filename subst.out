@@ -1,0 +1,705 @@
+
+Rulesystem:
+
+--------------------------------------
+0: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      V(V0) /\ V(V1) /\ P_subst(V1,V2,V3) /\ P_appl(V3,V0,V4) /\ V(V2) /\ V0 != V1 /\ V4 != V0 -> FALSE
+--------------------------------------
+1: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      V(V1) /\ P_subst(V1,V2,V3) /\ P_appl(V3,V1,V4) /\ V(V2) /\ V4 != V2 -> FALSE
+--------------------------------------
+2: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+       -> # V0 /\ pppp4(V0)
+--------------------------------------
+3: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp4(V0) -> # V1 /\ pppp3(V1,V0)
+--------------------------------------
+4: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp4(V0) -> V(V0)
+--------------------------------------
+5: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp3(V0,V1) /\ P_subst(V0,V1,V2) -> # V3 /\ pppp2(V3,V0,V1,V2)
+--------------------------------------
+6: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp3(V0,V1) /\ P_subst(V0,V1,V2) -> V(V0)
+--------------------------------------
+7: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp2(V0,V1,V2,V3) -> # V4 /\ pppp1(V4,V0,V1,V2,V3)
+--------------------------------------
+8: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp2(V0,V1,V2,V3) -> V(V0)
+--------------------------------------
+9: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) /\ P_subst(V10,V9,V11) -> # V12 /\ pppp0(V12,V5,V8,V11,V4)
+--------------------------------------
+10: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) /\ P_subst(V10,V9,V11) -> V(V10)
+--------------------------------------
+11: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) /\ # V9 -> V(V9)
+--------------------------------------
+12: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) -> V(V0)
+--------------------------------------
+13: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp0(V0,V1,V2,V3,V4) /\ P_appl(V1,V0,V5) /\ P_appl(V2,V5,V8) /\ P_appl(V4,V0,V7) /\ P_appl(V3,V7,V8) -> FALSE
+--------------------------------------
+14: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp0(V0,V1,V2,V3,V4) /\ P_appl(V1,V0,V5) /\ P_appl(V2,V5,V6) /\ P_appl(V4,V0,V7) /\ P_appl(V3,V7,V8) -> V(V0)
+--------------------------------------
+15: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      # V0 /\ # V1 -> # V2 /\ P_subst(V0,V1,V2)
+--------------------------------------
+16: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      # V0 /\ # V1 -> # V2 /\ P_appl(V0,V1,V2)
+
+
+predicates / arities
+
+Table of Predicate Names:
+=========================
+
+!= / 2
+# / 1
+V / 1
+P_appl / 3
+P_subst / 3
+pppp0 / 5
+pppp1 / 5
+pppp2 / 4
+pppp3 / 2
+pppp4 / 1
+
+
+( !=, [ 0 ] ) ( #, [ 1 ] ) ( P_appl, [ 3 ] ) ( P_subst, [ 4 ] ) ( V, [ 2 ] ) ( pppp0, [ 5 ] ) ( pppp1, [ 6 ] ) ( pppp2, [ 7 ] ) ( pppp3, [ 8 ] ) ( pppp4, [ 9 ] ) 
+
+-------------------------------------------
+Dependency System:
+
+
+Predicate: V,
+Dependencies:
+
+
+Predicate: P_appl,
+Dependencies:
+$2 = P_appl( $0, $1 )
+
+Predicate: P_subst,
+Dependencies:
+$2 = P_subst( $0, $1 )
+
+Predicate: pppp0,
+Dependencies:
+$0 = pppp0( $1, $2, $3, $4 )
+
+Predicate: pppp1,
+Dependencies:
+$0 = pppp1( $1, $2, $3, $4 ), $1 = pppp2( $2, $3, $4 ), $2 = pppp3( $3 ), $3 = pppp4(  ), $4 = P_subst( $2, $3 )
+
+Predicate: pppp2,
+Dependencies:
+$0 = pppp2( $1, $2, $3 ), $1 = pppp3( $2 ), $2 = pppp4(  ), $3 = P_subst( $1, $2 )
+
+Predicate: pppp3,
+Dependencies:
+$0 = pppp3( $1 ), $1 = pppp4(  )
+
+Predicate: pppp4,
+Dependencies:
+$0 = pppp4(  )
+
+
+-----------------------------------------------------
+Rule system with inductive axioms:
+
+Rulesystem:
+
+--------------------------------------
+0: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      V(V0) /\ V(V1) /\ P_subst(V1,V2,V3) /\ P_appl(V3,V0,V4) /\ V(V2) /\ V0 != V1 /\ V4 != V0 -> FALSE
+--------------------------------------
+1: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      V(V1) /\ P_subst(V1,V2,V3) /\ P_appl(V3,V1,V4) /\ V(V2) /\ V4 != V2 -> FALSE
+--------------------------------------
+2: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+       -> # V0 /\ pppp4(V0)
+--------------------------------------
+3: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp4(V0) -> # V1 /\ pppp3(V1,V0)
+--------------------------------------
+4: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp4(V0) -> V(V0)
+--------------------------------------
+5: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp3(V0,V1) /\ P_subst(V0,V1,V2) -> # V3 /\ pppp2(V3,V0,V1,V2)
+--------------------------------------
+6: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp3(V0,V1) /\ P_subst(V0,V1,V2) -> V(V0)
+--------------------------------------
+7: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp2(V0,V1,V2,V3) -> # V4 /\ pppp1(V4,V0,V1,V2,V3)
+--------------------------------------
+8: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp2(V0,V1,V2,V3) -> V(V0)
+--------------------------------------
+9: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) /\ P_subst(V10,V9,V11) -> # V12 /\ pppp0(V12,V5,V8,V11,V4)
+--------------------------------------
+10: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) /\ P_subst(V10,V9,V11) -> V(V10)
+--------------------------------------
+11: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) /\ # V9 -> V(V9)
+--------------------------------------
+12: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) -> V(V0)
+--------------------------------------
+13: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp0(V0,V1,V2,V3,V4) /\ P_appl(V1,V0,V5) /\ P_appl(V2,V5,V8) /\ P_appl(V4,V0,V7) /\ P_appl(V3,V7,V8) -> FALSE
+--------------------------------------
+14: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp0(V0,V1,V2,V3,V4) /\ P_appl(V1,V0,V5) /\ P_appl(V2,V5,V6) /\ P_appl(V4,V0,V7) /\ P_appl(V3,V7,V8) -> V(V0)
+--------------------------------------
+15: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      # V0 /\ # V1 -> # V2 /\ P_subst(V0,V1,V2)
+--------------------------------------
+16: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      # V0 /\ # V1 -> # V2 /\ P_appl(V0,V1,V2)
+--------------------------------------
+17: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      P_appl(V0,V1,V2) /\ P_appl(V0,V1,V5) /\ V2 != V5 -> FALSE
+--------------------------------------
+18: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      P_subst(V0,V1,V2) /\ P_subst(V0,V1,V5) /\ V2 != V5 -> FALSE
+--------------------------------------
+19: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp0(V0,V1,V2,V3,V4) /\ pppp0(V5,V1,V2,V3,V4) /\ V0 != V5 -> FALSE
+--------------------------------------
+20: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp1(V0,V1,V2,V3,V4) /\ pppp1(V5,V1,V2,V3,V4) /\ V0 != V5 -> FALSE
+--------------------------------------
+21: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp1(V0,V1,V2,V3,V4) /\ pppp1(V5,V6,V2,V3,V4) /\ V1 != V6 -> FALSE
+--------------------------------------
+22: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp1(V0,V1,V2,V3,V4) /\ pppp1(V5,V6,V7,V3,V9) /\ V2 != V7 -> FALSE
+--------------------------------------
+23: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp1(V0,V1,V2,V3,V4) /\ pppp1(V5,V6,V7,V8,V9) /\ V3 != V8 -> FALSE
+--------------------------------------
+24: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp1(V0,V1,V2,V3,V4) /\ pppp1(V5,V6,V2,V3,V9) /\ V4 != V9 -> FALSE
+--------------------------------------
+25: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp2(V0,V1,V2,V3) /\ pppp2(V4,V1,V2,V3) /\ V0 != V4 -> FALSE
+--------------------------------------
+26: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp2(V0,V1,V2,V3) /\ pppp2(V4,V5,V2,V7) /\ V1 != V5 -> FALSE
+--------------------------------------
+27: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp2(V0,V1,V2,V3) /\ pppp2(V4,V5,V6,V7) /\ V2 != V6 -> FALSE
+--------------------------------------
+28: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp2(V0,V1,V2,V3) /\ pppp2(V4,V1,V2,V7) /\ V3 != V7 -> FALSE
+--------------------------------------
+29: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp3(V0,V1) /\ pppp3(V2,V1) /\ V0 != V2 -> FALSE
+--------------------------------------
+30: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp3(V0,V1) /\ pppp3(V2,V3) /\ V1 != V3 -> FALSE
+--------------------------------------
+31: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp4(V0) /\ pppp4(V1) /\ V0 != V1 -> FALSE
+
+
+-----------------------------------------------------
+Starting Search:
+
+
+
+Report from makeclosurewith:
+counter = 0
+duration = 3.861e-06 (6.435e-08 min) (1.0725e-09 hr)
+interval       nrelements (cumulative %)    average (cumulative sum %)
+--------------------------------------------------------------------------
+
+SWLL Statistics:
+   attempted:     0
+   constructed:   0 (0)
+   interreduced:  0 (0)
+   succeeded:     0 (0)
+
+
+Report from improve:
+counter = 0
+duration = 1.598e-06 (2.66333e-08 min) (4.43889e-10 hr)
+interval       nrelements (cumulative %)    average (cumulative sum %)
+--------------------------------------------------------------------------
+
+closure  0,  rule number  13,  atoms  9,  elements  1.
+Rulesystem:
+
+--------------------------------------
+0: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      V(V0) /\ V(V1) /\ P_subst(V1,V2,V3) /\ P_appl(V3,V0,V4) /\ V(V2) /\ V0 != V1 /\ V4 != V0 -> FALSE
+--------------------------------------
+1: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      V(V1) /\ P_subst(V1,V2,V3) /\ P_appl(V3,V1,V4) /\ V(V2) /\ V4 != V2 -> FALSE
+--------------------------------------
+2: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+       -> # V0 /\ pppp4(V0)
+--------------------------------------
+3: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp4(V0) -> # V1 /\ pppp3(V1,V0)
+--------------------------------------
+4: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp4(V0) -> V(V0)
+--------------------------------------
+5: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp3(V0,V1) /\ P_subst(V0,V1,V2) -> # V3 /\ pppp2(V3,V0,V1,V2)
+--------------------------------------
+6: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp3(V0,V1) /\ P_subst(V0,V1,V2) -> V(V0)
+--------------------------------------
+7: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp2(V0,V1,V2,V3) -> # V4 /\ pppp1(V4,V0,V1,V2,V3)
+--------------------------------------
+8: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp2(V0,V1,V2,V3) -> V(V0)
+--------------------------------------
+9: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) /\ P_subst(V10,V9,V11) -> # V12 /\ pppp0(V12,V5,V8,V11,V4)
+--------------------------------------
+10: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) /\ P_subst(V10,V9,V11) -> V(V10)
+--------------------------------------
+11: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) /\ # V9 -> V(V9)
+--------------------------------------
+12: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp1(V0,V1,V2,V3,V4) /\ P_subst(V0,V1,V5) /\ P_appl(V5,V2,V6) /\ P_appl(V5,V3,V7) /\ P_subst(V6,V7,V8) -> V(V0)
+--------------------------------------
+13: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp0(V0,V1,V2,V3,V4) /\ P_appl(V1,V0,V5) /\ P_appl(V2,V5,V8) /\ P_appl(V4,V0,V7) /\ P_appl(V3,V7,V8) -> FALSE
+--------------------------------------
+14: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      pppp0(V0,V1,V2,V3,V4) /\ P_appl(V1,V0,V5) /\ P_appl(V2,V5,V6) /\ P_appl(V4,V0,V7) /\ P_appl(V3,V7,V8) -> V(V0)
+--------------------------------------
+15: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      # V0 /\ # V1 -> # V2 /\ P_subst(V0,V1,V2)
+--------------------------------------
+16: 
+   (nrappl = 0/0, lastappl = 0/0)    (active) 
+      # V0 /\ # V1 -> # V2 /\ P_appl(V0,V1,V2)
+--------------------------------------
+17: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      P_appl(V0,V1,V2) /\ P_appl(V0,V1,V5) /\ V2 != V5 -> FALSE
+--------------------------------------
+18: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      P_subst(V0,V1,V2) /\ P_subst(V0,V1,V5) /\ V2 != V5 -> FALSE
+--------------------------------------
+19: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp0(V0,V1,V2,V3,V4) /\ pppp0(V5,V1,V2,V3,V4) /\ V0 != V5 -> FALSE
+--------------------------------------
+20: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp1(V0,V1,V2,V3,V4) /\ pppp1(V5,V1,V2,V3,V4) /\ V0 != V5 -> FALSE
+--------------------------------------
+21: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp1(V0,V1,V2,V3,V4) /\ pppp1(V5,V6,V2,V3,V4) /\ V1 != V6 -> FALSE
+--------------------------------------
+22: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp1(V0,V1,V2,V3,V4) /\ pppp1(V5,V6,V7,V3,V9) /\ V2 != V7 -> FALSE
+--------------------------------------
+23: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp1(V0,V1,V2,V3,V4) /\ pppp1(V5,V6,V7,V8,V9) /\ V3 != V8 -> FALSE
+--------------------------------------
+24: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp1(V0,V1,V2,V3,V4) /\ pppp1(V5,V6,V2,V3,V9) /\ V4 != V9 -> FALSE
+--------------------------------------
+25: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp2(V0,V1,V2,V3) /\ pppp2(V4,V1,V2,V3) /\ V0 != V4 -> FALSE
+--------------------------------------
+26: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp2(V0,V1,V2,V3) /\ pppp2(V4,V5,V2,V7) /\ V1 != V5 -> FALSE
+--------------------------------------
+27: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp2(V0,V1,V2,V3) /\ pppp2(V4,V5,V6,V7) /\ V2 != V6 -> FALSE
+--------------------------------------
+28: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp2(V0,V1,V2,V3) /\ pppp2(V4,V1,V2,V7) /\ V3 != V7 -> FALSE
+--------------------------------------
+29: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp3(V0,V1) /\ pppp3(V2,V1) /\ V0 != V2 -> FALSE
+--------------------------------------
+30: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp3(V0,V1) /\ pppp3(V2,V3) /\ V1 != V3 -> FALSE
+--------------------------------------
+31: 
+   (nrappl = 0/0, lastappl = 0/0)    (active,inductive) 
+      pppp4(V0) /\ pppp4(V1) /\ V0 != V1 -> FALSE
+
+
+
+-------------------------------------
+Interpretation:
+
+0 : 2() (0/1)    [ 0; L0, W1 ]      # E0
+1 : 2() (0/1)    [ 0; L0, W1 ]      pppp4(E0)
+2 : 4(1) (0/1)    [ 0; L1, W2 ]      V(E0)
+3 : 3(1) (0/2)    [ 0; L1, W2 ]      pppp3(E0,E0)
+4 : 15(0,0) (0/2)    [ 0; L1, W3 ]      P_subst(E0,E0,E0)
+5 : 16(0,0) (0/2)    [ 0; L1, W3 ]      P_appl(E0,E0,E0)
+6 : 5(3,4) (0/2)    [ 0; L2, W6 ]      pppp2(E0,E0,E0,E0)
+7 : 7(6) (0/2)    [ 0; L3, W7 ]      pppp1(E0,E0,E0,E0,E0)
+8 : 9(7,4,5,5,4,4) (0/2)    [ 0; L4, W23 ]      pppp0(E0,E0,E0,E0,E0)
+
+The model contains 1 elements
+It has been closed 0 times
+Simple Index:
+atoms:
+   0 :   #_{T} E0
+   1 :   pppp4_{T}(E0)
+   2 :   V_{T}(E0)
+   3 :   pppp3_{T}(E0,E0)
+   4 :   P_subst_{T}(E0,E0,E0)
+   5 :   P_appl_{T}(E0,E0,E0)
+   6 :   pppp2_{T}(E0,E0,E0,E0)
+   7 :   pppp1_{T}(E0,E0,E0,E0,E0)
+   8 :   pppp0_{T}(E0,E0,E0,E0,E0)
+
+predicate:
+   pppp0 :   { 8 }
+   pppp1 :   { 7 }
+   pppp2 :   { 6 }
+   P_appl :   { 5 }
+   P_subst :   { 4 }
+   pppp3 :   { 3 }
+   V :   { 2 }
+   pppp4 :   { 1 }
+   # :   { 0 }
+
+argument:
+   E0 : { 0, 1, 2, 3, 4, 5, 6, 7, 8 }
+
+predicate/argument:
+   pppp0[4]:E0 :   { 8 }
+   pppp0[3]:E0 :   { 8 }
+   pppp0[2]:E0 :   { 8 }
+   P_appl[0]:E0 :   { 5 }
+   P_appl[1]:E0 :   { 5 }
+   P_appl[2]:E0 :   { 5 }
+   P_subst[2]:E0 :   { 4 }
+   P_subst[0]:E0 :   { 4 }
+   P_subst[1]:E0 :   { 4 }
+   pppp3[1]:E0 :   { 3 }
+   pppp3[0]:E0 :   { 3 }
+   V[0]:E0 :   { 2 }
+   pppp4[0]:E0 :   { 1 }
+   #[0]:E0 :   { 0 }
+   pppp2[0]:E0 :   { 6 }
+   pppp2[1]:E0 :   { 6 }
+   pppp2[2]:E0 :   { 6 }
+   pppp2[3]:E0 :   { 6 }
+   pppp1[0]:E0 :   { 7 }
+   pppp1[1]:E0 :   { 7 }
+   pppp1[2]:E0 :   { 7 }
+   pppp1[3]:E0 :   { 7 }
+   pppp1[4]:E0 :   { 7 }
+   pppp0[0]:E0 :   { 8 }
+   pppp0[1]:E0 :   { 8 }
+
+-------------------------------------
+
+The closing lemma is application( false_instance( pppp0(V0,V1,V2,V3,V4) /\ P_appl(V1,V0,V5) /\ P_appl(V2,V5,V8) /\ P_appl(V4,V0,V7) /\ P_appl(V3,V7,V8) -> FALSE,
+GroundSubstitution( V0 := E0,  V1 := E0,  V2 := E0,  V3 := E0,  V4 := E0,  V5 := E0,  V8 := E0,  V7 := E0 ), atom nrs( 8, 5, 5, 5, 5 )), rule number = 13, branching degree = 0 )
+
+Simple Index:
+atoms:
+   0 :   pppp0_{T}(V0,V1,V2,V3,V4)
+   1 :   P_appl_{T}(V1,V0,V5)
+   2 :   P_appl_{T}(V2,V5,V8)
+   3 :   P_appl_{T}(V4,V0,V7)
+   4 :   P_appl_{T}(V3,V7,V8)
+
+predicate:
+   P_appl :   { 1, 2, 3, 4 }
+   pppp0 :   { 0 }
+
+argument:
+   V7 : { 3, 4 }
+   V8 : { 2, 4 }
+   V5 : { 1, 2 }
+   V4 : { 0, 3 }
+   V3 : { 0, 4 }
+   V2 : { 0, 2 }
+   V1 : { 0, 1 }
+   V0 : { 0, 1, 3 }
+
+predicate/argument:
+   P_appl[0]:V3 :   { 4 }
+   P_appl[0]:V4 :   { 3 }
+   pppp0[0]:V0 :   { 0 }
+   P_appl[0]:V2 :   { 2 }
+   P_appl[1]:V7 :   { 4 }
+   P_appl[2]:V7 :   { 3 }
+   pppp0[1]:V1 :   { 0 }
+   P_appl[2]:V8 :   { 2, 4 }
+   pppp0[2]:V2 :   { 0 }
+   pppp0[3]:V3 :   { 0 }
+   pppp0[4]:V4 :   { 0 }
+   P_appl[0]:V1 :   { 1 }
+   P_appl[1]:V0 :   { 1, 3 }
+   P_appl[1]:V5 :   { 2 }
+   P_appl[2]:V5 :   { 1 }
+
+duration = 0.00312274 (5.20456e-05 min) (8.67426e-07 hr)
+-------------------------------------
+
+Created a lemma:  8, 6
+Report from findsubsumptionwithoutdiseq:
+counter = 0
+duration = 2.173e-06 (3.62167e-08 min) (6.03611e-10 hr)
+interval       nrelements (cumulative %)    average (cumulative sum %)
+--------------------------------------------------------------------------
+
+SWLL Statistics:
+   attempted:     0
+   constructed:   0 (0)
+   interreduced:  0 (0)
+   succeeded:     0 (0)
+
+
+Condensing lemma:  6, 6
+Report from findselfsubsumption:
+counter = 0
+duration = 2.939e-06 (4.89833e-08 min) (8.16389e-10 hr)
+interval       nrelements (cumulative %)    average (cumulative sum %)
+--------------------------------------------------------------------------
+
+SWLL Statistics:
+   attempted:     0
+   constructed:   0 (0)
+   interreduced:  0 (0)
+   succeeded:     0 (0)
+
+
+Report from findsubsumption:
+counter = 0
+duration = 1.716e-06 (2.86e-08 min) (4.76667e-10 hr)
+interval       nrelements (cumulative %)    average (cumulative sum %)
+--------------------------------------------------------------------------
+
+SWLL Statistics:
+   attempted:     0
+   constructed:   0 (0)
+   interreduced:  0 (0)
+   succeeded:     0 (0)
+
+
+Kept lemma nr 33
+
+Created a lemma:  8, 4
+Condensing lemma:  6, 4
+Kept lemma nr 34
+
+Created a lemma:  11, 13
+Condensing lemma:  10, 13
+Kept lemma nr 35
+
+Created a lemma:  18, 23
+splitting on V20 != V10
+splitting on V10 != V9
+splitting on V21 != V10
+splitting on V21 != V9
+splitting on V22 != V9
+splitting on V3 != V16
+splitting on V2 != V15
+splitting on V4 != V19
+splitting on V1 != V18
+splitting on V0 != V17
+splitting on V19 != V14
+splitting on V5 != V11
+splitting on V6 != V12
+splitting on V14 != V13
+Condensing lemma:  9, 10
+TRUE CONDENSATION
+Kept lemma nr 36
+
+splitting on V22 != V10
+splitting on V3 != V16
+splitting on V2 != V15
+splitting on V4 != V19
+splitting on V1 != V18
+splitting on V0 != V17
+splitting on V19 != V14
+splitting on V5 != V11
+splitting on V6 != V12
+splitting on V14 != V13
+Condensing lemma:  12, 11
+TRUE CONDENSATION
+Kept lemma nr 37
+
+Created a lemma:  9, 12
+Condensing lemma:  9, 12
+Kept lemma nr 38
+
+Created a lemma:  10, 11
+Condensing lemma:  8, 11
+Kept lemma nr 39
+
+Created a lemma:  8, 8
+Condensing lemma:  6, 8
+Kept lemma nr 40
+
+Created a lemma:  7, 7
+Condensing lemma:  5, 7
+Kept lemma nr 41
+
+closure  10,  rule number  38,  atoms  13,  elements  2.
+Created a lemma:  9, 15
+splitting on V11 != V3
+splitting on V3 != V2
+splitting on V6 != V7
+splitting on V12 != V4
+splitting on V10 != V1
+splitting on V9 != V0
+Condensing lemma:  7, 9
+Kept lemma nr 42
+
+Created a lemma:  11, 13
+Condensing lemma:  11, 13
+Kept lemma nr 43
+
+Created a lemma:  12, 12
+Condensing lemma:  10, 12
+Kept lemma nr 44
+
+Created a lemma:  11, 10
+splitting on V4 != V1
+splitting on V5 != V9
+splitting on V3 != V8
+splitting on V2 != V7
+Condensing lemma:  8, 6
+Kept lemma nr 45
+
+Created a lemma:  11, 13
+Condensing lemma:  11, 13
+Kept lemma nr 46
+
+Created a lemma:  17, 14
+splitting on V5 != V12
+splitting on V4 != V11
+splitting on V3 != V9
+Condensing lemma:  13, 11
+Kept lemma nr 47
+
+Created a lemma:  10, 13
+Condensing lemma:  9, 13
+Kept lemma nr 48
+
+Created a lemma:  15, 14
+splitting on V5 != V10
+splitting on V4 != V9
+splitting on V3 != V8
+Condensing lemma:  11, 11
+Kept lemma nr 49
+
+closure  20,  rule number  43,  atoms  18,  elements  3.
+Created a lemma:  13, 11
+splitting on V5 != V9
+splitting on V4 != V8
+splitting on V3 != V7
+Condensing lemma:  9, 8
+Kept lemma nr 50
+
+Created a lemma:  12, 14
+Condensing lemma:  11, 14
+Kept lemma nr 51
+
+Condensing lemma:  8, 8
+Kept lemma nr 52
+
+splitting on V15 != V9
+splitting on V11 != V15
+splitting on V11 != V10
+splitting on V10

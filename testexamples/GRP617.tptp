@@ -1,0 +1,99 @@
+%------------------------------------------------------------------------------
+% File     : GRP617-1 : TPTP v3.2.0. Released v3.1.0.
+% Domain   : Group Theory
+% Problem  : PQEx lemma
+% Version  : Especial.
+% English  : Proves commutativity of mutliplication across two trivially
+%            intersecting subgroups.
+
+% Refs     : [Dvo02] Dvorsky (2002), Email to G. Sutcliffe
+% Source   : [Dvo02]
+% Names    : 
+
+% Status   : Unsatisfiable
+% Rating   : 0.29 v3.2.0, 0.14 v3.1.0
+% Syntax   : Number of clauses     :   18 (   0 non-Horn;   8 unit;  11 RR)
+%            Number of atoms       :   38 (   3 equality)
+%            Maximal clause size   :    4 (   2 average)
+%            Number of predicates  :    4 (   0 propositional; 1-3 arity)
+%            Number of functors    :    5 (   3 constant; 0-2 arity)
+%            Number of variables   :   35 (   0 singleton)
+%            Maximal term depth    :    4 (   1 average)
+
+% Comments : 
+%          : tptp2X -f tptp:short -t rm_equality:rstfp GRP617-1.p 
+%------------------------------------------------------------------------------
+cnf(left_identity,axiom,(
+    product(identity,X,X) )).
+
+cnf(right_identity,axiom,(
+    product(X,identity,X) )).
+
+cnf(left_inverse,axiom,(
+    product(inverse(X),X,identity) )).
+
+cnf(right_inverse,axiom,(
+    product(X,inverse(X),identity) )).
+
+cnf(total_function1,axiom,(
+    product(X,Y,multiply(X,Y)) )).
+
+cnf(total_function2,axiom,
+    ( ~ product(X,Y,Z)
+    | ~ product(X,Y,W)
+    | Z = W )).
+
+cnf(associativity1,axiom,
+    ( ~ product(X,Y,U)
+    | ~ product(Y,Z,V)
+    | ~ product(U,Z,W)
+    | product(X,V,W) )).
+
+cnf(associativity2,axiom,
+    ( ~ product(X,Y,U)
+    | ~ product(Y,Z,V)
+    | ~ product(X,V,W)
+    | product(U,Z,W) )).
+
+cnf(closure_of_inverse1,axiom,
+    ( ~ subgroup1_member(X)
+    | subgroup1_member(inverse(X)) )).
+
+cnf(closure_of_product1,axiom,
+    ( ~ subgroup1_member(A)
+    | ~ subgroup1_member(B)
+    | ~ product(A,B,C)
+    | subgroup1_member(C) )).
+
+cnf(closure_of_inverse2,axiom,
+    ( ~ subgroup2_member(X)
+    | subgroup2_member(inverse(X)) )).
+
+cnf(closure_of_product2,axiom,
+    ( ~ subgroup2_member(A)
+    | ~ subgroup2_member(B)
+    | ~ product(A,B,C)
+    | subgroup2_member(C) )).
+
+cnf(normality1,hypothesis,
+    ( ~ subgroup1_member(X)
+    | subgroup1_member(multiply(A,multiply(X,inverse(A)))) )).
+
+cnf(normality2,hypothesis,
+    ( ~ subgroup2_member(X)
+    | subgroup2_member(multiply(A,multiply(X,inverse(A)))) )).
+
+cnf(trivial_intersection,hypothesis,
+    ( ~ subgroup1_member(X)
+    | ~ subgroup2_member(X)
+    | X = identity )).
+
+cnf(v_in_G1,hypothesis,(
+    subgroup1_member(v) )).
+
+cnf(u_in_G2,hypothesis,(
+    subgroup2_member(u) )).
+
+cnf(prove_vu_equals_uv,negated_conjecture,(
+    multiply(v,u) != multiply(u,v) )).
+%------------------------------------------------------------------------------

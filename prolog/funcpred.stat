@@ -1,0 +1,23 @@
+
+
+#ifndef FUNCPRED_STAT_INCLUDED 
+#define FUNCPRED_STAT_INCLUDED   1
+
+
+#include "funcpred.h"
+
+
+namespace prolog
+{
+
+   std::map< std::string, std::list< unsigned int > > funcpred::lookuptable = 
+            std::map< std::string, std::list< unsigned int > > ( );
+
+   std::vector< funcpred::prop > funcpred::properties = 
+            std::vector< funcpred::prop > ( );
+
+}
+
+#endif
+
+
